@@ -3,51 +3,121 @@ import streamlit as st
 import pandas as pd
 import joblib
 
+# ---------------- PAGE SETTINGS ----------------
 st.set_page_config(
     page_title="Diwali Sales AI",
     page_icon="🛍️",
     layout="wide"
 )
 
-# Design
+# ---------------- BLACK + GOLD THEME ----------------
 st.markdown("""
 <style>
+
 .stApp {
-    background-color: #f4f8ff;
+    background-color: #101010;
+    color: #F5F5F5;
 }
+
+[data-testid="stHeader"] {
+    background-color: #101010;
+}
+
+[data-testid="stSidebar"] {
+    background-color: #181818;
+}
+
 .main-title {
-    color: #174ea6;
-    font-size: 38px;
-    font-weight: 800;
+    color: #D4AF37;
+    font-size: 42px;
+    font-weight: 900;
     text-align: center;
 }
+
 .subtitle {
-    color: #52647d;
+    color: #C8B77B;
     text-align: center;
+    font-size: 18px;
+}
+
+.hero {
+    background: linear-gradient(120deg, #181818, #39301C);
+    padding: 40px;
+    border-radius: 18px;
+    border: 1px solid #D4AF37;
+    text-align: center;
+}
+
+.hero h1 {
+    color: #E8C65A;
+    font-size: 38px;
+}
+
+.hero h3 {
+    color: #FFFFFF;
+}
+
+.hero p {
+    color: #E5D9B0;
     font-size: 17px;
 }
-.hero {
-    background: linear-gradient(120deg, #174ea6, #4285f4);
-    padding: 35px;
-    border-radius: 18px;
-    color: white;
-    text-align: center;
-}
-.hero h1 {
-    color: white;
-}
+
 .feature-card {
-    background: white;
-    padding: 20px;
-    border-radius: 14px;
-    border: 1px solid #d9e7ff;
-    min-height: 140px;
+    background-color: #1C1C1C;
+    padding: 22px;
+    border-radius: 15px;
+    border: 1px solid #A88932;
+    min-height: 150px;
 }
+
+.feature-card h3 {
+    color: #E8C65A;
+}
+
+.feature-card p {
+    color: #DDDDDD;
+}
+
+div.stButton > button {
+    background: linear-gradient(120deg, #B38B22, #E8C65A);
+    color: #111111;
+    border-radius: 10px;
+    border: none;
+    font-weight: bold;
+    padding: 12px 25px;
+}
+
+div.stButton > button:hover {
+    background: #FFFFFF;
+    color: #111111;
+    border: 1px solid #D4AF37;
+}
+
+div[data-testid="stMetric"] {
+    background-color: #1C1C1C;
+    border: 1px solid #D4AF37;
+    padding: 20px;
+    border-radius: 12px;
+}
+
+div[data-testid="stMetricValue"] {
+    color: #E8C65A;
+}
+
+.stSelectbox label,
+.stNumberInput label {
+    color: #E8C65A !important;
+}
+
+hr {
+    border-color: #8C7027;
+}
+
 </style>
 """, unsafe_allow_html=True)
 
 
-# Load model
+# ---------------- LOAD AI MODEL ----------------
 @st.cache_resource
 def load_model():
     model = joblib.load("diwali_sales_ai_model.pkl")
@@ -57,20 +127,21 @@ def load_model():
 model, feature_columns = load_model()
 
 
-# Header
+# ---------------- HEADER ----------------
 st.markdown(
-    '<div class="main-title">🛍️ Diwali Sales AI</div>',
+    '<div class="main-title">🛍️ DIWALI SALES AI</div>',
     unsafe_allow_html=True
 )
 
 st.markdown(
-    '<div class="subtitle">Smart Customer Purchase Prediction</div>',
+    '<div class="subtitle">Premium AI Customer Purchase Predictor</div>',
     unsafe_allow_html=True
 )
 
 st.write("")
 
-# Navigation
+
+# ---------------- NAVIGATION ----------------
 page = st.radio(
     "Navigation",
     ["Home", "Predict", "About"],
@@ -81,7 +152,9 @@ page = st.radio(
 st.divider()
 
 
+# ==================================================
 # HOME PAGE
+# ==================================================
 if page == "Home":
 
     st.markdown("""
@@ -89,57 +162,66 @@ if page == "Home":
         <h1>Welcome to Diwali Sales AI</h1>
         <h3>Predict. Analyze. Discover.</h3>
         <p>
-        Use Artificial Intelligence to estimate
-        customer shopping amounts.
+        Discover customer shopping patterns with
+        Artificial Intelligence and Machine Learning.
         </p>
     </div>
     """, unsafe_allow_html=True)
 
     st.write("")
-    st.subheader("✨ Our Features")
+    st.subheader("✨ Explore Our Features")
 
     c1, c2, c3 = st.columns(3)
 
     with c1:
         st.markdown("""
         <div class="feature-card">
-        <h3>🤖 AI Prediction</h3>
-        <p>Estimate customer purchase amounts.</p>
+            <h3>🤖 AI Prediction</h3>
+            <p>Predict estimated customer purchase amounts.</p>
         </div>
         """, unsafe_allow_html=True)
 
     with c2:
         st.markdown("""
         <div class="feature-card">
-        <h3>📊 Smart Analysis</h3>
-        <p>Analyze customer shopping information.</p>
+            <h3>📊 Smart Analysis</h3>
+            <p>Explore customer information and shopping patterns.</p>
         </div>
         """, unsafe_allow_html=True)
 
     with c3:
         st.markdown("""
         <div class="feature-card">
-        <h3>⚡ Instant Results</h3>
-        <p>Get estimated results in seconds.</p>
+            <h3>⚡ Instant Results</h3>
+            <p>Get AI-based estimates in just a few seconds.</p>
         </div>
         """, unsafe_allow_html=True)
 
     st.write("")
-    st.info("Go to the Predict page to try our AI model.")
+    st.info("Select the Predict page above to try the AI model.")
 
 
+# ==================================================
 # PREDICTION PAGE
+# ==================================================
 elif page == "Predict":
 
     st.header("👤 Customer Purchase Predictor")
-    st.write("Enter customer details below.")
+
+    st.write(
+        "Enter customer information to estimate their purchase amount."
+    )
 
     with st.form("customer_form"):
 
         col1, col2 = st.columns(2)
 
         with col1:
-            gender = st.selectbox("Gender", ["F", "M"])
+
+            gender = st.selectbox(
+                "Gender",
+                ["F", "M"]
+            )
 
             age = st.number_input(
                 "Customer Age",
@@ -152,7 +234,7 @@ elif page == "Predict":
                 "Marital Status",
                 [0, 1],
                 format_func=lambda x:
-                    "Single" if x == 0 else "Married"
+                "Single" if x == 0 else "Married"
             )
 
             orders = st.number_input(
@@ -171,6 +253,7 @@ elif page == "Predict":
             ])
 
         with col2:
+
             zone = st.selectbox("Zone", [
                 "Western", "Southern", "Central",
                 "Northern", "Eastern"
@@ -198,7 +281,7 @@ elif page == "Predict":
             ])
 
         submitted = st.form_submit_button(
-            "🔮 Predict Purchase Amount",
+            "✨ Predict Purchase Amount",
             use_container_width=True
         )
 
@@ -230,17 +313,21 @@ elif page == "Predict":
         customer["Orders"] = orders
 
         def set_category(prefix, value):
+
             target = value.strip().replace(
                 "\xa0", " "
             ).lower()
 
             for col in customer.columns:
+
                 if col.startswith(prefix + "_"):
+
                     category = col[len(prefix) + 1:]
 
                     if category.strip().replace(
                         "\xa0", " "
                     ).lower() == target:
+
                         customer.loc[0, col] = 1
                         return
 
@@ -254,36 +341,45 @@ elif page == "Predict":
         prediction = model.predict(customer)[0]
 
         st.divider()
-        st.subheader("🎉 Prediction Result")
+
+        st.markdown("""
+        <div class="hero">
+            <h1>🎉 Prediction Completed!</h1>
+            <p>Your estimated customer purchase amount</p>
+        </div>
+        """, unsafe_allow_html=True)
 
         st.metric(
             "Estimated Purchase Amount",
             f"₹ {prediction:,.2f}"
         )
 
-        st.success("AI prediction completed successfully!")
+        st.success("Your AI prediction is ready!")
 
         st.caption(
-            "This is an estimated amount, not a guaranteed purchase."
+            "This is an estimated amount, not a guaranteed actual purchase."
         )
 
 
+# ==================================================
 # ABOUT PAGE
+# ==================================================
 elif page == "About":
 
-    st.header("📖 About This Project")
+    st.header("📖 About Diwali Sales AI")
 
     st.write("""
     Diwali Sales AI is a Machine Learning project
-    that predicts customer purchase amounts using
-    customer information and shopping patterns.
+    designed to estimate customer purchase amounts
+    using customer information and shopping patterns.
 
-    The model was trained using the Diwali Sales dataset.
+    This project uses the Diwali Sales dataset and
+    a trained regression model.
     """)
 
-    st.subheader("🤖 Machine Learning Model")
+    st.divider()
 
-    st.write("Model: HistGradientBoostingRegressor")
+    st.subheader("🤖 AI Model Performance")
 
     c1, c2, c3 = st.columns(3)
 
@@ -292,7 +388,7 @@ elif page == "About":
     c3.metric("RMSE", "₹3,157.65")
 
     st.info(
-        "R² Score is a regression performance metric, "
+        "R² is a regression performance metric, "
         "not classification accuracy."
     )
 
@@ -307,12 +403,13 @@ elif page == "About":
     """)
 
 
-# Footer
+# ---------------- FOOTER ----------------
 st.divider()
 
-st.markdown(
-    "<p style='text-align:center;color:#718096;'>"
-    "Diwali Sales AI | Built with Python and Streamlit"
-    "</p>",
-    unsafe_allow_html=True
-)
+st.markdown("""
+<p style="text-align:center;color:#C8B77B;">
+    🛍️ DIWALI SALES AI
+    <br>
+    Developed with Python, Streamlit & Machine Learning
+</p>
+""", unsafe_allow_html=True)
