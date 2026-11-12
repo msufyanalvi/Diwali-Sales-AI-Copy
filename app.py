@@ -3,30 +3,54 @@ import streamlit as st
 import pandas as pd
 import joblib
 
-# Page settings
+# ---------------- PAGE SETTINGS ----------------
 st.set_page_config(
     page_title="Diwali Sales AI",
     page_icon="🛍️",
     layout="wide"
 )
 
-# Custom CSS
+# ---------------- CUSTOM DESIGN ----------------
 st.markdown("""
 <style>
 .stApp {
     background-color: #f4f8ff;
 }
+
 .main-title {
     color: #174ea6;
-    font-size: 38px;
+    font-size: 40px;
     font-weight: 800;
     text-align: center;
 }
+
 .subtitle {
     color: #52647d;
     text-align: center;
-    font-size: 17px;
+    font-size: 18px;
 }
+
+.hero {
+    background: linear-gradient(120deg, #174ea6, #4285f4);
+    padding: 35px;
+    border-radius: 18px;
+    color: white;
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.hero h1 {
+    color: white;
+}
+
+.feature-card {
+    background: white;
+    padding: 22px;
+    border-radius: 14px;
+    border: 1px solid #d9e7ff;
+    min-height: 145px;
+}
+
 div.stButton > button {
     background-color: #1769e0;
     color: white;
@@ -35,10 +59,12 @@ div.stButton > button {
     padding: 12px 25px;
     font-weight: bold;
 }
+
 div.stButton > button:hover {
     background-color: #0d47a1;
     color: white;
 }
+
 .result-card {
     background-color: white;
     padding: 25px;
@@ -50,55 +76,91 @@ div.stButton > button:hover {
 """, unsafe_allow_html=True)
 
 
-# Load AI model
+# ---------------- LOAD AI MODEL ----------------
 @st.cache_resource
 def load_model():
     model = joblib.load("diwali_sales_ai_model.pkl")
     columns = joblib.load("diwali_feature_columns.pkl")
     return model, columns
 
-
 model, feature_columns = load_model()
 
 
-# Website heading
+# ---------------- HEADER ----------------
 st.markdown(
-    '<div class="main-title">🛍️ Diwali Sales AI Predictor</div>',
+    '<div class="main-title">🛍️ Diwali Sales AI</div>',
     unsafe_allow_html=True
 )
 
 st.markdown(
-    '<div class="subtitle">Predict customer purchase amount using Machine Learning</div>',
+    '<div class="subtitle">Smart Customer Purchase Prediction Using Machine Learning</div>',
     unsafe_allow_html=True
 )
+
+st.write("")
+
+
+# ---------------- HOME PAGE ----------------
+st.markdown("""
+<div class="hero">
+    <h1>Welcome to Diwali Sales AI</h1>
+    <h3>Predict. Analyze. Discover.</h3>
+    <p>
+    Discover the power of Artificial Intelligence
+    to estimate customer shopping amounts.
+    </p>
+</div>
+""", unsafe_allow_html=True)
+
+st.subheader("✨ What Can This AI Do?")
+
+col1, col2, col3 = st.columns(3)
+
+with col1:
+    st.markdown("""
+    <div class="feature-card">
+        <h3>🤖 AI Prediction</h3>
+        <p>Predict customer purchase amounts using Machine Learning.</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+with col2:
+    st.markdown("""
+    <div class="feature-card">
+        <h3>📊 Smart Analysis</h3>
+        <p>Use customer information to estimate shopping behavior.</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+with col3:
+    st.markdown("""
+    <div class="feature-card">
+        <h3>⚡ Instant Results</h3>
+        <p>Get estimated purchase amounts in seconds.</p>
+    </div>
+    """, unsafe_allow_html=True)
 
 st.write("")
 st.divider()
 
-# Information section
-col1, col2, col3 = st.columns(3)
 
-with col1:
-    st.info("🤖 AI Powered Prediction")
+# ---------------- CUSTOMER FORM ----------------
+st.header("👤 Customer Purchase Predictor")
 
-with col2:
-    st.info("📊 Customer Analysis")
-
-with col3:
-    st.info("⚡ Instant Results")
-
-st.write("")
-
-# Customer form
-st.subheader("👤 Enter Customer Details")
-st.write("Fill in the information below to predict the purchase amount.")
+st.write(
+    "Enter customer details below to estimate the purchase amount."
+)
 
 with st.form("customer_form"):
 
     col1, col2 = st.columns(2)
 
     with col1:
-        gender = st.selectbox("Gender", ["F", "M"])
+
+        gender = st.selectbox(
+            "Gender",
+            ["F", "M"]
+        )
 
         age = st.number_input(
             "Customer Age",
@@ -127,6 +189,7 @@ with st.form("customer_form"):
         ])
 
     with col2:
+
         zone = st.selectbox("Zone", [
             "Western", "Southern", "Central", "Northern", "Eastern"
         ])
@@ -152,7 +215,7 @@ with st.form("customer_form"):
     )
 
 
-# Prediction
+# ---------------- PREDICTION ----------------
 if submitted:
 
     if age <= 17:
@@ -181,13 +244,21 @@ if submitted:
     customer["Orders"] = orders
 
     def set_category(prefix, value):
-        target = value.strip().replace("\xa0", " ").lower()
+
+        target = value.strip().replace(
+            "\xa0", " "
+        ).lower()
 
         for col in customer.columns:
+
             if col.startswith(prefix + "_"):
+
                 category = col[len(prefix) + 1:]
 
-                if category.strip().replace("\xa0", " ").lower() == target:
+                if category.strip().replace(
+                    "\xa0", " "
+                ).lower() == target:
+
                     customer.loc[0, col] = 1
                     return
 
@@ -203,31 +274,36 @@ if submitted:
     st.write("")
     st.divider()
 
-    st.markdown(
-        '<div class="result-card">'
-        '<h2 style="color:#174ea6;">🎉 Prediction Result</h2>'
-        '</div>',
-        unsafe_allow_html=True
-    )
+    st.markdown("""
+    <div class="result-card">
+        <h2 style="color:#174ea6;">🎉 Prediction Result</h2>
+        <p style="color:#52647d;">
+        Your customer's estimated purchase amount is:
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
 
     st.metric(
-        "Estimated Customer Purchase Amount",
+        "Estimated Purchase Amount",
         f"₹ {prediction:,.2f}"
     )
 
-    st.success("Your AI prediction is ready!")
+    st.success("AI prediction completed successfully!")
 
     st.caption(
-        "Note: This is an estimated purchase amount, "
+        "Note: This is an estimated amount, "
         "not a guaranteed actual purchase."
     )
 
-# Footer
+
+# ---------------- FOOTER ----------------
+st.write("")
 st.divider()
 
-st.markdown(
-    "<p style='text-align:center;color:#718096;'>"
-    "Developed with Python, Streamlit & Machine Learning"
-    "</p>",
-    unsafe_allow_html=True
-)
+st.markdown("""
+<p style="text-align:center; color:#718096;">
+Developed with Python, Streamlit & Machine Learning
+<br>
+Diwali Sales AI Project
+</p>
+""", unsafe_allow_html=True)
